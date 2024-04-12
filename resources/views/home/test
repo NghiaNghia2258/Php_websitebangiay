@@ -1,0 +1,119 @@
+@extends('front/layout')
+@section('front/content')
+<section class="main">
+    <div class="row">
+        <div class="col-5 col-s-12 padding-form">
+            <div class="title">THÔNG TIN THANH TOÁN</div>
+            <div class=note>(<span>*</span>) Bắt buộc</div>
+            <form action="{{ route('cart.checkoutpost') }}" method="post">
+                @csrf
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            {{-- <header class="card-header">
+                                <h4 class="card-title mt-2">Chi tiết thanh toán</h4>
+                            </header> --}}
+                            <article class="card-body">
+                                <div class="form-row">
+                                    <div class="col form-group">
+                                        <label>Tên người nhận</label>
+                                        <input type="text" class="form-control" name="name">
+                                    </div>
+                                    
+                                </div>
+                                <div class="form-group">
+                                    <label>Địa chỉ</label>
+                                    <input type="text" class="form-control" name="address">
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group  col-md-6">
+                                        <label>Số điện thoại</label>
+                                        <input type="text" class="form-control" name="phone">
+                                    </div>
+                                </div>
+                               
+                            </article>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    {{-- <header class="card-header">
+                                        <h4 class="card-title mt-2">Your Order</h4>
+                                    </header> --}}
+                                    <article class="card-body">
+                                        <dl class="dlist-align">
+                                            <dt>Tổng tiền: </dt>
+                                            <dd class="text-right h5 b"> {{ config('settings.currency_symbol') }}{{ number_format(\Cart::getSubTotal()) }} đ </dd>
+                                        </dl>
+                                    </article>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-4">
+<button type="submit" style="float: right" class="px-6 py-2 text-blue-800 bg-blue-300">Đặt Hàng</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+               
+            </form>
+        </div>
+       <div class="col-7 col-s-12 padding-form">
+            <div class="title">ĐƠN HÀNG</div>
+            <table class="w-full text-sm lg:text-base" cellspacing="0">
+                <thead>
+                  <tr class="h-12 uppercase">
+                    <th class="hidden md:table-cell"></th>
+                    <th class="text-left">Tên sản phẩm</th>
+                    <th  style="width:250px">
+                      <span class="lg:hidden" title="SoLuong">Qtd</span>
+                      <span class="hidden lg:inline">Số lượng</span>
+                    </th>
+                    <th >Thành tiền</th>
+                   
+                  </tr>
+                </thead>
+                <tbody>
+                    @foreach ($cartItems as $item)
+                  <tr>
+                    <td class="hidden pb-4 md:table-cell">
+                      <a href="#">
+                        <img src="/Assets/img/LAPTOP/{{ $item->attributes->image  }}" class="w-20 rounded" alt="Thumbnail">
+                      </a>
+                    </td>
+                    <td>
+                      <a href="#">
+                        <p class="mb-2 md:ml-4">{{ $item->Name }}</p>
+                        
+                      </a>
+                    </td>
+<td class="justify-center mt-6 md:justify-end md:flex">
+                      <div class="h-10 w-28">
+                        <div class="relative flex flex-row w-full h-8">
+                          <input type="int" name="SoLuong" value="{{ $item->SoLuong }}" 
+                          class="w-6 text-center bg-gray-300" />
+                         
+                        </div>
+                      </div>
+                    </td>
+                    <td class="hidden text-right md:table-cell">
+                      <span class="text-sm font-medium lg:text-base">
+                          {{number_format($item->Price * $item->SoLuong) }} đ
+                      </span>
+                    </td>
+                    
+                  </tr>
+                  @endforeach
+                   
+                </tbody>
+              </table>
+       
+               
+        </div> 
+    </div>
+    <script src="js/pay_print.js"></script>
+</section>
+@endsection
